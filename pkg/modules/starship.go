@@ -131,7 +131,7 @@ func (m *StarshipModule) installPowerShell(opts *ModuleOptions) (string, error) 
 	// For Windows, we need to add Starship to PATH via PowerShell profile
 	profilePath := filepath.Join(opts.HomeDir, "Documents", "PowerShell", "Microsoft.PowerShell_profile.ps1")
 	if _, err := os.Stat(profilePath); os.IsNotExist(err) {
-		profilePath = filepath.Join(opts.HomeDir, "Documents", "WindowsPowerShell", "Microsoft.PowerShell_profile.ps1")
+		_ = filepath.Join(opts.HomeDir, "Documents", "WindowsPowerShell", "Microsoft.PowerShell_profile.ps1")
 	}
 
 	return "Starship installed. Add 'Invoke-Expression (&starship init powershell)' to your PowerShell profile.", nil
@@ -164,17 +164,17 @@ func (m *StarshipModule) installLinux(opts *ModuleOptions) (string, error) {
 		if !opts.Sudo {
 			return "", fmt.Errorf("sudo is required to install Starship via APT")
 		}
-		
-		installer := exec.Command("sh", "-c", fmt.Sprintf("curl -sS https://starship.rs/install.sh | sh -s -- -y"))
+
+		installer := exec.Command("sh", "-c", "curl -sS https://starship.rs/install.sh | sh -s -- -y")
 		if opts.Verbose {
 			installer.Stdout = os.Stdout
 			installer.Stderr = os.Stderr
 		}
-		
+
 		if err := installer.Run(); err != nil {
 			return "", fmt.Errorf("installing starship: %w", err)
 		}
-		
+
 		return "Installed via official installer", nil
 	}
 
@@ -376,24 +376,6 @@ func (m *StarshipModule) GetInitCommand(shell types.Shell) string {
 	}
 }
 
-// ensureStarshipConfig creates the default Starship configuration.
-func (m *StarshipModule) ensureStarshipConfig(opts *ModuleOptions) error {
-	configDir := filepath.Join(opts.HomeDir, ".config", "starship")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
-		return fmt.Errorf("creating config directory: %w", err)
-	}
-
-	configFile := filepath.Join(configDir, "config.toml")
-	if _, err := os.Stat(configFile); os.IsNotExist(err) {
-		defaultConfig := getDefaultStarshipConfig()
-		if err := os.WriteFile(configFile, []byte(defaultConfig), 0644); err != nil {
-			return fmt.Errorf("writing default config: %w", err)
-		}
-	}
-
-	return nil
-}
-
 // getDefaultStarshipConfig returns the default Starship configuration.
 func getDefaultStarshipConfig() string {
 	return `# Get more completions and faster performance
@@ -447,5 +429,5 @@ var _ Module = (*StarshipModule)(nil)
 
 // init registers the Starship module with the global registry.
 func init() {
-	Register(NewStarshipModule())
+	_ = Register(NewStarshipModule())
 }

@@ -4,7 +4,6 @@ package installer
 import (
 	"fmt"
 	"os/exec"
-	"strings"
 
 	"github.com/auto-dev-terminal/auto-dev-terminal/internal/types"
 )
@@ -35,12 +34,12 @@ type Installer interface {
 
 // BaseInstaller provides common functionality for all installers.
 type BaseInstaller struct {
-	NameStr      string
-	InstallCmd   string
-	ListCmd      string
-	RemoveCmd    string
-	UpdateCmd    string
-	VersionCmd   string
+	NameStr    string
+	InstallCmd string
+	ListCmd    string
+	RemoveCmd  string
+	UpdateCmd  string
+	VersionCmd string
 }
 
 // runCommand executes a command and returns the output.
@@ -66,17 +65,4 @@ func (b *BaseInstaller) runCommandWithSudo(sudo bool, cmd string, args ...string
 func commandExists(cmd string) bool {
 	execCmd := exec.Command("command", "-v", cmd)
 	return execCmd.Run() == nil
-}
-
-// parseVersion parses version string from command output.
-func parseVersion(output string) string {
-	lines := strings.Split(output, "\n")
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		if line != "" {
-			// Take first non-empty line as version
-			return strings.Fields(line)[0]
-		}
-	}
-	return ""
 }

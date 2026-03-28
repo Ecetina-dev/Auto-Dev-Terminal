@@ -20,7 +20,7 @@ func InstallingView(m Model) string {
 		m.InstallTotal)
 
 	content := PanelStyle.Render(
-		progress+"\n\n"+
+		progress + "\n\n" +
 			Bold.Render(progressText))
 
 	// Current module being installed
@@ -81,8 +81,8 @@ func (m Model) renderInstallResults() string {
 // InstallProgressView shows detailed progress for a single module.
 func InstallProgressView(moduleName string, step string, progress int) string {
 	content := PanelStyle.Render(
-		Bold.Render("Installing: ")+Highlight.Render(moduleName)+"\n\n"+
-			Subtle.Render(step)+"\n\n"+
+		Bold.Render("Installing: ") + Highlight.Render(moduleName) + "\n\n" +
+			Subtle.Render(step) + "\n\n" +
 			ProgressBar(progress, 100, 30))
 
 	return content

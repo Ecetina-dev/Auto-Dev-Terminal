@@ -1,8 +1,6 @@
 package config
 
 import (
-	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -264,10 +262,10 @@ func TestTemplateEngineUpdateVariable(t *testing.T) {
 			},
 		},
 		{
-			name:    "unknown variable",
-			key:     "UnknownVar",
-			value:   "value",
-			wantErr: true,
+			name:      "unknown variable",
+			key:       "UnknownVar",
+			value:     "value",
+			wantErr:   true,
 			checkFunc: nil,
 		},
 	}
@@ -316,23 +314,4 @@ func TestGetTemplateVariables(t *testing.T) {
 			t.Errorf("Expected variable %q not found", expected)
 		}
 	}
-}
-
-// Helper to create temp directory for tests
-func createTempDir(t *testing.T) string {
-	dir, err := os.MkdirTemp("", "template-test")
-	if err != nil {
-		t.Fatalf("Failed to create temp dir: %v", err)
-	}
-	return dir
-}
-
-// Helper to create temp file
-func createTempFile(t *testing.T, dir, name, content string) string {
-	path := filepath.Join(dir, name)
-	err := os.WriteFile(path, []byte(content), 0644)
-	if err != nil {
-		t.Fatalf("Failed to create temp file: %v", err)
-	}
-	return path
 }

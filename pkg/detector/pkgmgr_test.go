@@ -9,9 +9,9 @@ import (
 
 func TestGetPackageManagerBinary(t *testing.T) {
 	tests := []struct {
-		name          string
-		pkgMgr        types.PackageManager
-		expectedBin   string
+		name        string
+		pkgMgr      types.PackageManager
+		expectedBin string
 	}{
 		{
 			name:        "homebrew",
@@ -146,9 +146,9 @@ func TestParseVersionOutput(t *testing.T) {
 
 func TestGetLinuxPreferredOrder(t *testing.T) {
 	tests := []struct {
-		name       string
-		distro     types.Distro
-		wantFirst  types.PackageManager
+		name      string
+		distro    types.Distro
+		wantFirst types.PackageManager
 	}{
 		{
 			name:      "ubuntu",
@@ -228,46 +228,46 @@ func TestGetLinuxPreferredOrder(t *testing.T) {
 
 func TestGetPreferredPackageManager(t *testing.T) {
 	tests := []struct {
-		name      string
-		os        types.OS
-		distro    types.Distro
-		managers  []types.PackageManager
-		expected  types.PackageManager
+		name     string
+		os       types.OS
+		distro   types.Distro
+		managers []types.PackageManager
+		expected types.PackageManager
 	}{
 		{
-			name:      "darwin with homebrew",
-			os:        types.OSDarwin,
-			distro:    types.DistroUnknown,
-			managers:  []types.PackageManager{types.PkgMgrHomebrew, types.PkgMgrMacPorts},
-			expected:  types.PkgMgrHomebrew,
+			name:     "darwin with homebrew",
+			os:       types.OSDarwin,
+			distro:   types.DistroUnknown,
+			managers: []types.PackageManager{types.PkgMgrHomebrew, types.PkgMgrMacPorts},
+			expected: types.PkgMgrHomebrew,
 		},
 		{
-			name:      "windows with winget",
-			os:        types.OSWindows,
-			distro:    types.DistroUnknown,
-			managers:  []types.PackageManager{types.PkgMgrWinget, types.PkgMgrChocolatey},
-			expected:  types.PkgMgrWinget,
+			name:     "windows with winget",
+			os:       types.OSWindows,
+			distro:   types.DistroUnknown,
+			managers: []types.PackageManager{types.PkgMgrWinget, types.PkgMgrChocolatey},
+			expected: types.PkgMgrWinget,
 		},
 		{
-			name:      "ubuntu with apt",
-			os:        types.OSLinux,
-			distro:    types.DistroUbuntu,
-			managers:  []types.PackageManager{types.PkgMgrAPT, types.PkgMgrSnap},
-			expected:  types.PkgMgrAPT,
+			name:     "ubuntu with apt",
+			os:       types.OSLinux,
+			distro:   types.DistroUbuntu,
+			managers: []types.PackageManager{types.PkgMgrAPT, types.PkgMgrSnap},
+			expected: types.PkgMgrAPT,
 		},
 		{
-			name:      "empty managers returns unknown",
-			os:        types.OSLinux,
-			distro:    types.DistroUbuntu,
-			managers:  []types.PackageManager{},
-			expected:  types.PkgMgrUnknown,
+			name:     "empty managers returns unknown",
+			os:       types.OSLinux,
+			distro:   types.DistroUbuntu,
+			managers: []types.PackageManager{},
+			expected: types.PkgMgrUnknown,
 		},
 		{
-			name:      "fallback to first available",
-			os:        types.OSLinux,
-			distro:    types.DistroUnknown,
-			managers:  []types.PackageManager{types.PkgMgrPacman},
-			expected:  types.PkgMgrPacman,
+			name:     "fallback to first available",
+			os:       types.OSLinux,
+			distro:   types.DistroUnknown,
+			managers: []types.PackageManager{types.PkgMgrPacman},
+			expected: types.PkgMgrPacman,
 		},
 	}
 

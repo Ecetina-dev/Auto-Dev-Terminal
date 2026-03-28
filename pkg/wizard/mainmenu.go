@@ -42,13 +42,13 @@ func MainMenuOptions() []MainMenuOption {
 // MainMenuView renders the main menu view.
 func MainMenuView(m Model) string {
 	options := MainMenuOptions()
-	
+
 	// Header
 	header := LargeTitleStyle.Render("Auto Dev Terminal")
 	header += "\n\n"
 	header += Subtle.Render("Automated Development Environment Setup\n")
 	header += "\n"
-	
+
 	// Menu
 	var menuItems []string
 	for i, opt := range options {
@@ -61,16 +61,16 @@ func MainMenuView(m Model) string {
 		}
 		menuItems = append(menuItems, "") // Empty line between options
 	}
-	
+
 	menu := lipgloss.JoinVertical(lipgloss.Left, menuItems...)
-	
+
 	// Footer
 	footer := "\n\n"
 	footer += KeyMap()
-	
+
 	// Combine
 	content := header + menu + footer
-	
+
 	// Apply container style
 	return lipgloss.NewStyle().
 		Width(70).

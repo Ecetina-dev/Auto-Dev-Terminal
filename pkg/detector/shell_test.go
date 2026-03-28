@@ -210,18 +210,18 @@ func TestGetEnvOrEmpty(t *testing.T) {
 	// Set a test environment variable
 	key := "AUTO_DEV_TERMINAL_TEST_VAR"
 	testValue := "test_value"
-	
+
 	// Clean up after test
 	originalValue := os.Getenv(key)
 	defer func() { os.Setenv(key, originalValue) }()
-	
+
 	os.Setenv(key, testValue)
-	
+
 	result := getEnvOrEmpty(key)
 	if result != testValue {
 		t.Errorf("getEnvOrEmpty(%q) = %q, want %q", key, result, testValue)
 	}
-	
+
 	// Test non-existent variable
 	nonexistent := getEnvOrEmpty("AUTO_DEV_TERMINAL_NONEXISTENT_VAR_12345")
 	if nonexistent != "" {

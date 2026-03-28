@@ -1,9 +1,10 @@
 package detector
 
 import (
-	"github.com/auto-dev-terminal/auto-dev-terminal/internal/types"
 	"os/exec"
 	"strings"
+
+	"github.com/auto-dev-terminal/auto-dev-terminal/internal/types"
 )
 
 // DetectPackageManagers returns a list of available package managers on the system.

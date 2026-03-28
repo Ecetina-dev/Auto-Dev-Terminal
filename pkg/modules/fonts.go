@@ -386,7 +386,9 @@ Get-ItemProperty -Path $regPath | Get-Member -MemberType NoteProperty |
     ForEach-Object { Remove-ItemProperty -Path $regPath -Name $_.Name }
 `
 	cmd := exec.Command("powershell", "-Command", psScript)
-	cmd.Run()
+	if err := cmd.Run(); err != nil {
+		return "", fmt.Errorf("removing font registry entries: %w", err)
+	}
 
 	return "Removed Nerd Fonts from Windows", nil
 }
@@ -474,5 +476,5 @@ var _ Module = (*FontsModule)(nil)
 
 // init registers the Fonts module with the global registry.
 func init() {
-	Register(NewFontsModule())
+	_ = Register(NewFontsModule())
 }

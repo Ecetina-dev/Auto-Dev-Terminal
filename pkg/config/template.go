@@ -11,14 +11,14 @@ import (
 
 // ConfigVariables holds the template variables available for config templating
 type ConfigVariables struct {
-	HomeDir    string
-	Shell      string
-	OS         string
-	Arch       string
-	ConfigDir  string
-	BinaryDir  string
-	Username   string
-	TempDir    string
+	HomeDir   string
+	Shell     string
+	OS        string
+	Arch      string
+	ConfigDir string
+	BinaryDir string
+	Username  string
+	TempDir   string
 }
 
 // NewConfigVariables creates a new ConfigVariables with system values

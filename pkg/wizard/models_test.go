@@ -42,10 +42,10 @@ func TestNewModel(t *testing.T) {
 
 func TestModelInit(t *testing.T) {
 	m := NewModel()
-	
+
 	// Init should load modules
 	cmd := m.Init()
-	
+
 	// cmd may be nil or return something - just verify it doesn't panic
 	_ = cmd
 }
@@ -202,7 +202,7 @@ func TestModelGetManager(t *testing.T) {
 
 	// With system info
 	m.SystemInfo = &types.SystemInfo{
-		OS:   types.OSLinux,
+		OS:     types.OSLinux,
 		Distro: types.DistroUbuntu,
 	}
 
@@ -222,12 +222,12 @@ func TestModelCanInstall(t *testing.T) {
 
 	// Setup with available modules
 	m.AvailableModules = modules.List()
-	
+
 	// Only add selection (no system info)
 	if len(m.AvailableModules) > 0 {
 		firstMod := m.AvailableModules[0]
 		m.SelectedModules[firstMod.Name()] = true
-		
+
 		if m.CanInstall() {
 			t.Error("CanInstall() should return false with no system info")
 		}
@@ -252,17 +252,17 @@ func TestModelCanInstall(t *testing.T) {
 
 func TestModelStartDetection(t *testing.T) {
 	m := NewModel()
-	
+
 	// StartDetection should set screen and attempt detection
 	// Note: This will likely fail in test environment without proper system detection
 	// but we just verify it doesn't panic
 	err := m.StartDetection()
-	
+
 	// Screen should be set to Detection regardless of detection success
 	if m.CurrentScreen != ScreenDetection {
 		t.Errorf("CurrentScreen = %v, want %v", m.CurrentScreen, ScreenDetection)
 	}
-	
+
 	// If detection failed, DetectionErr should be set
 	if err != nil && m.DetectionErr == nil {
 		t.Error("DetectionErr should be set when detection fails")
@@ -280,7 +280,7 @@ func TestModelStartInstallation(t *testing.T) {
 
 	// Setup with available modules and system info
 	m.AvailableModules = modules.List()
-	
+
 	if len(m.AvailableModules) > 0 {
 		firstMod := m.AvailableModules[0]
 		m.SelectedModules[firstMod.Name()] = true

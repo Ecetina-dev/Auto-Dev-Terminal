@@ -98,7 +98,7 @@ func TestRegistryGet(t *testing.T) {
 	}
 
 	// Register and get
-	r.Register(mod)
+	_ = r.Register(mod)
 	result = r.Get("test-module")
 	if result == nil {
 		t.Error("Get() returned nil for registered module")
@@ -120,8 +120,8 @@ func TestRegistryList(t *testing.T) {
 	// Add modules
 	mod1 := &mockModule{name: "module1", description: "Desc1", version: "1.0"}
 	mod2 := &mockModule{name: "module2", description: "Desc2", version: "2.0"}
-	r.Register(mod1)
-	r.Register(mod2)
+	_ = r.Register(mod1)
+	_ = r.Register(mod2)
 
 	modules = r.List()
 	if len(modules) != 2 {
@@ -141,8 +141,8 @@ func TestRegistryNames(t *testing.T) {
 	// Add modules
 	mod1 := &mockModule{name: "module1", description: "Desc1", version: "1.0"}
 	mod2 := &mockModule{name: "module2", description: "Desc2", version: "2.0"}
-	r.Register(mod1)
-	r.Register(mod2)
+	_ = r.Register(mod1)
+	_ = r.Register(mod2)
 
 	names = r.Names()
 	if len(names) != 2 {
@@ -166,12 +166,12 @@ func TestRegistryLen(t *testing.T) {
 		t.Errorf("Len() on empty registry = %d, want 0", r.Len())
 	}
 
-	r.Register(&mockModule{name: "mod1", description: "Desc", version: "1.0"})
+	_ = r.Register(&mockModule{name: "mod1", description: "Desc", version: "1.0"})
 	if r.Len() != 1 {
 		t.Errorf("Len() = %d, want 1", r.Len())
 	}
 
-	r.Register(&mockModule{name: "mod2", description: "Desc", version: "1.0"})
+	_ = r.Register(&mockModule{name: "mod2", description: "Desc", version: "1.0"})
 	if r.Len() != 2 {
 		t.Errorf("Len() = %d, want 2", r.Len())
 	}
@@ -187,7 +187,7 @@ func TestRegistryHas(t *testing.T) {
 
 	// Register and test
 	mod := &mockModule{name: "test-module", description: "Desc", version: "1.0"}
-	r.Register(mod)
+	_ = r.Register(mod)
 
 	if !r.Has("test-module") {
 		t.Error("Has() should return true for registered module")
@@ -217,9 +217,9 @@ func TestRegistryGetDependencies(t *testing.T) {
 		dependencies: []string{"module2"},
 	}
 
-	r.Register(mod1)
-	r.Register(mod2)
-	r.Register(mod3)
+	_ = r.Register(mod1)
+	_ = r.Register(mod2)
+	_ = r.Register(mod3)
 
 	// Get dependencies for module3
 	deps, err := r.GetDependencies("module3")
@@ -262,9 +262,9 @@ func TestRegistryResolveDependencies(t *testing.T) {
 		dependencies: []string{"module1"},
 	}
 
-	r.Register(mod3)
-	r.Register(mod1)
-	r.Register(mod2)
+	_ = r.Register(mod3)
+	_ = r.Register(mod1)
+	_ = r.Register(mod2)
 
 	// Resolve dependencies - should return correct order
 	order, err := r.ResolveDependencies("module3")
@@ -292,7 +292,7 @@ func TestRegistryResolveDependencies(t *testing.T) {
 		version:      "1.0",
 		dependencies: []string{"nonexistent"},
 	}
-	r.Register(mod4)
+	_ = r.Register(mod4)
 
 	_, err = r.ResolveDependencies("module4")
 	if err == nil {

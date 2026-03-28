@@ -7,7 +7,7 @@ import (
 	"github.com/auto-dev-terminal/auto-dev-terminal/pkg/installer"
 	"github.com/auto-dev-terminal/auto-dev-terminal/pkg/modules"
 
-	"github.com/charmbracelet/bubbletea"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 // Screen represents the current screen state in the wizard.
@@ -27,8 +27,8 @@ const (
 // Model is the main Bubble Tea model for the wizard.
 type Model struct {
 	// Screen state
-	CurrentScreen   Screen
-	PreviousScreen  Screen
+	CurrentScreen  Screen
+	PreviousScreen Screen
 
 	// System information
 	SystemInfo   *types.SystemInfo
@@ -36,15 +36,15 @@ type Model struct {
 
 	// Module selection
 	AvailableModules []modules.Module
-	SelectedModules map[string]bool
-	ModuleCursor   int
+	SelectedModules  map[string]bool
+	ModuleCursor     int
 
 	// Installation state
 	InstallProgress int
-	InstallTotal   int
-	InstallResults []types.InstallResult
-	InstallError   error
-	IsInstalling  bool
+	InstallTotal    int
+	InstallResults  []types.InstallResult
+	InstallError    error
+	IsInstalling    bool
 
 	// Navigation
 	MenuCursor    int
@@ -58,22 +58,22 @@ type Model struct {
 // NewModel creates a new wizard model with default values.
 func NewModel() Model {
 	return Model{
-		CurrentScreen:   ScreenWelcome,
-		PreviousScreen:  -1,
-		SystemInfo:      nil,
-		DetectionErr:    nil,
+		CurrentScreen:    ScreenWelcome,
+		PreviousScreen:   -1,
+		SystemInfo:       nil,
+		DetectionErr:     nil,
 		AvailableModules: nil,
-		SelectedModules: make(map[string]bool),
-		ModuleCursor:    0,
-		InstallProgress: 0,
-		InstallTotal:    0,
-		InstallResults:  nil,
-		InstallError:    nil,
-		IsInstalling:    false,
-		MenuCursor:      0,
-		ConfirmChoice:   false,
-		ConfigPath:      "",
-		Verbose:         false,
+		SelectedModules:  make(map[string]bool),
+		ModuleCursor:     0,
+		InstallProgress:  0,
+		InstallTotal:     0,
+		InstallResults:   nil,
+		InstallError:     nil,
+		IsInstalling:     false,
+		MenuCursor:       0,
+		ConfirmChoice:    false,
+		ConfigPath:       "",
+		Verbose:          false,
 	}
 }
 

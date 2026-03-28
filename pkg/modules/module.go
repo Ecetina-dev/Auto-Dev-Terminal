@@ -62,9 +62,9 @@ type Module interface {
 
 // BaseModule provides common functionality for all modules.
 type BaseModule struct {
-	name        string
-	description string
-	version     string
+	name         string
+	description  string
+	version      string
 	dependencies []string
 }
 

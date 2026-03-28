@@ -63,34 +63,34 @@ func TestManagerRegisterInstallers(t *testing.T) {
 		expectZypper bool
 	}{
 		{
-			name:         "ubuntu registers APT",
-			distro:       types.DistroUbuntu,
-			expectAPT:    true,
+			name:      "ubuntu registers APT",
+			distro:    types.DistroUbuntu,
+			expectAPT: true,
 		},
 		{
-			name:         "debian registers APT",
-			distro:       types.DistroDebian,
-			expectAPT:    true,
+			name:      "debian registers APT",
+			distro:    types.DistroDebian,
+			expectAPT: true,
 		},
 		{
-			name:         "linuxmint registers APT",
-			distro:       types.DistroLinuxMint,
-			expectAPT:    true,
+			name:      "linuxmint registers APT",
+			distro:    types.DistroLinuxMint,
+			expectAPT: true,
 		},
 		{
-			name:         "fedora registers DNF",
-			distro:       types.DistroFedora,
-			expectDNF:    true,
+			name:      "fedora registers DNF",
+			distro:    types.DistroFedora,
+			expectDNF: true,
 		},
 		{
-			name:         "rhel registers DNF",
-			distro:       types.DistroRHEL,
-			expectDNF:    true,
+			name:      "rhel registers DNF",
+			distro:    types.DistroRHEL,
+			expectDNF: true,
 		},
 		{
-			name:         "centos registers DNF",
-			distro:       types.DistroCentOS,
-			expectDNF:    true,
+			name:      "centos registers DNF",
+			distro:    types.DistroCentOS,
+			expectDNF: true,
 		},
 		{
 			name:         "arch registers Pacman",
@@ -164,7 +164,7 @@ func TestGetAvailableInstallers(t *testing.T) {
 
 	// Get available installers - should return at least the cross-platform ones
 	available := m.GetAvailableInstallers()
-	
+
 	// At minimum, we should have cross-platform installers registered
 	if len(available) < 1 {
 		t.Logf("GetAvailableInstallers returned %d installers", len(available))
@@ -176,7 +176,7 @@ func TestInstall(t *testing.T) {
 
 	// Test installing a non-existent package with unknown package manager
 	result := m.Install(types.PkgMgrUnknown, "nonexistent-package", nil)
-	
+
 	if result == nil {
 		t.Error("Install() returned nil result")
 	}
@@ -193,7 +193,7 @@ func TestUninstall(t *testing.T) {
 
 	// Test uninstalling with unknown package manager
 	result := m.Uninstall(types.PkgMgrUnknown, "some-package", nil)
-	
+
 	if result == nil {
 		t.Error("Uninstall() returned nil result")
 	}
@@ -207,7 +207,7 @@ func TestIsInstalled(t *testing.T) {
 
 	// Test with unknown package manager
 	_, err := m.IsInstalled(types.PkgMgrUnknown, "some-package")
-	
+
 	if err == nil {
 		t.Error("IsInstalled() should have failed for unknown package manager")
 	}
@@ -218,7 +218,7 @@ func TestUpdate(t *testing.T) {
 
 	// Test updating with unknown package manager
 	result := m.Update(types.PkgMgrUnknown, "some-package", nil)
-	
+
 	if result == nil {
 		t.Error("Update() returned nil result")
 	}
@@ -232,7 +232,7 @@ func TestGetVersion(t *testing.T) {
 
 	// Test with unknown package manager
 	_, err := m.GetVersion(types.PkgMgrUnknown, "some-package")
-	
+
 	if err == nil {
 		t.Error("GetVersion() should have failed for unknown package manager")
 	}
@@ -248,7 +248,7 @@ func TestAutoDetectInstaller(t *testing.T) {
 			systemInfo: nil,
 		},
 		{
-			name:       "with system info",
+			name: "with system info",
 			systemInfo: &types.SystemInfo{
 				OS:              types.OSLinux,
 				Distro:          types.DistroUbuntu,
@@ -261,7 +261,7 @@ func TestAutoDetectInstaller(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			m := NewManager(tt.systemInfo)
 			installer, pkgMgr := m.AutoDetectInstaller()
-			
+
 			// The result may be nil if no installers are available in test environment
 			// but the function should not panic
 			_ = installer

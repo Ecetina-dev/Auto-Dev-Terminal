@@ -75,23 +75,6 @@ func DetectShell() (types.Shell, string, error) {
 	return types.ShellUnknown, "", fmt.Errorf("could not detect shell")
 }
 
-// detectPowerShell checks for PowerShell or PowerShell Core.
-func detectPowerShell() string {
-	// Check for PowerShell Core (pwsh)
-	if commandExists("pwsh") {
-		return "pwsh"
-	}
-	// Check for Windows PowerShell
-	if commandExists("powershell.exe") {
-		return "powershell.exe"
-	}
-	// Check for PowerShell in PATH
-	if commandExists("powershell") {
-		return "powershell"
-	}
-	return ""
-}
-
 // shellFromPath converts a shell path to our Shell type.
 func shellFromPath(path string) types.Shell {
 	base := strings.ToLower(strings.TrimSpace(path))

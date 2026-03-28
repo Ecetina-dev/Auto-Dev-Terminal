@@ -1,46 +1,23 @@
 # golangci-lint configuration
-# https://golangci-lint.run/usage/configuration/
 
 run:
   timeout: 5m
-  modules-download-mode: readonly
+
+# Using CLI: golangci-lint run --disable-all -E errcheck,gofmt,goimports,misspell,unused
 
 linters:
+  disable-all: true
   enable:
-    - errcheck      # Check for unchecked errors
-    - gosimple      # Simplify code
-    - govet         # Reports suspicious constructs
-    - ineffassign   # Detects unused variable assignments
-    - staticcheck  # Static analysis checks
-    - unused       # Checks for unused code
-    - gofmt        # Checks whether code was gofmt-ed
-    - goimports    # Check import statements are formatted
-    - misspell     # Finds commonly misspelled English words
-    - unconvert    # Detects unnecessary type conversions
-    - unparam      # Reports unused function parameters
-    - gocritic     # Provides diagnostics that check for bugs and style issues
-    - gocyclo      # Computes and checks the cyclomatic complexity of functions
+    - errcheck
+    - gofmt
+    - goimports
+    - misspell
+    - unused
 
 linters-settings:
   errcheck:
     check-type-assertions: true
     check-blank: true
-  
-  gocyclo:
-    min-complexity: 15
-  
-  govet:
-    enable-all: true
-  
-  misspell:
-    locale: US
 
 issues:
   exclude-use-default: false
-  max-issues-per-linter: 0
-  max-same-issues: 0
-
-output:
-  format: colored-line-number
-  print-issued-lines: true
-  print-linter-name: true

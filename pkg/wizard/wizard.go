@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/auto-dev-terminal/auto-dev-terminal/pkg/detector"
-	"github.com/charmbracelet/bubbletea"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 

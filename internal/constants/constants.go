@@ -31,7 +31,7 @@ var (
 // Error messages
 var (
 	// Detection errors
-	ErrOSDetectionFailed      = "failed to detect operating system"
+	ErrOSDetectionFailed     = "failed to detect operating system"
 	ErrShellDetectionFailed  = "failed to detect shell"
 	ErrPkgMgrDetectionFailed = "failed to detect package managers"
 	ErrDistroDetectionFailed = "failed to detect Linux distribution"
@@ -41,27 +41,27 @@ var (
 	ErrInstallationFailed    = "installation failed"
 	ErrVerificationFailed    = "installation verification failed"
 	ErrPackageNotFound       = "package not found"
-	ErrAlreadyInstalled     = "package already installed"
-	ErrRequiresSudo         = "installation requires elevated privileges"
+	ErrAlreadyInstalled      = "package already installed"
+	ErrRequiresSudo          = "installation requires elevated privileges"
 
 	// Configuration errors
-	ErrBackupFailed     = "failed to create backup"
-	ErrRestoreFailed    = "failed to restore backup"
-	ErrTemplateFailed   = "failed to render template"
-	ErrWriteFailed      = "failed to write configuration file"
+	ErrBackupFailed      = "failed to create backup"
+	ErrRestoreFailed     = "failed to restore backup"
+	ErrTemplateFailed    = "failed to render template"
+	ErrWriteFailed       = "failed to write configuration file"
 	ErrManifestCorrupted = "backup manifest is corrupted"
 
 	// Module errors
 	ErrModuleNotFound    = "module not found"
 	ErrModuleInvalid     = "invalid module definition"
 	ErrModuleUnsupported = "module not supported on current platform"
-	ErrDependencyFailed = "module dependency not satisfied"
+	ErrDependencyFailed  = "module dependency not satisfied"
 
 	// General errors
-	ErrFileNotFound    = "file not found"
+	ErrFileNotFound     = "file not found"
 	ErrPermissionDenied = "permission denied"
-	ErrInvalidInput    = "invalid input"
-	ErrCancelled      = "operation cancelled"
+	ErrInvalidInput     = "invalid input"
+	ErrCancelled        = "operation cancelled"
 )
 
 // Backup filename format
@@ -91,16 +91,16 @@ var SupportedOS = []string{
 
 // Package manager binary names
 var PackageManagerBinaries = map[string][]string{
-	"homebrew":    {"brew"},
-	"macports":    {"port"},
-	"chocolatey":  {"choco"},
-	"scoop":       {"scoop"},
-	"winget":      {"winget"},
-	"apt":         {"apt"},
-	"dnf":         {"dnf"},
-	"yum":         {"yum"},
-	"pacman":      {"pacman"},
-	"zypper":      {"zypper"},
-	"snap":        {"snap"},
-	"flatpak":     {"flatpak"},
+	"homebrew":   {"brew"},
+	"macports":   {"port"},
+	"chocolatey": {"choco"},
+	"scoop":      {"scoop"},
+	"winget":     {"winget"},
+	"apt":        {"apt"},
+	"dnf":        {"dnf"},
+	"yum":        {"yum"},
+	"pacman":     {"pacman"},
+	"zypper":     {"zypper"},
+	"snap":       {"snap"},
+	"flatpak":    {"flatpak"},
 }

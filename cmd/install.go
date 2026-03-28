@@ -85,7 +85,10 @@ func runInstall(cmd *cobra.Command, args []string) error {
 	if !installFlags.yes {
 		fmt.Print("\nDo you want to continue? [y/N]: ")
 		var response string
-		fmt.Scanln(&response)
+		if _, err := fmt.Scanln(&response); err != nil {
+			// If there's an error reading, assume no
+			response = "n"
+		}
 		if response != "y" && response != "Y" {
 			fmt.Println("Installation cancelled.")
 			return nil

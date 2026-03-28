@@ -10,9 +10,9 @@ import (
 func DetectionView(m Model) string {
 	title := TitleStyle.Render("System Detection")
 	title += "\n\n"
-	
+
 	var content string
-	
+
 	// Check if detection is running (SystemInfo is nil)
 	if m.SystemInfo == nil {
 		if m.DetectionErr != nil {
@@ -33,17 +33,17 @@ func DetectionView(m Model) string {
 		// Show results
 		content = m.renderDetectionResults()
 	}
-	
+
 	footer := "\n"
 	footer += ShortKeyMap()
-	
+
 	return title + content + footer
 }
 
 // renderDetectionResults formats and displays the detection results.
 func (m Model) renderDetectionResults() string {
 	var sections []string
-	
+
 	// OS Section
 	osInfo := fmt.Sprintf("%s: %s", Bold.Render("Operating System"), string(m.SystemInfo.OS))
 	if m.SystemInfo.Distro != "" {
@@ -54,22 +54,22 @@ func (m Model) renderDetectionResults() string {
 		osInfo += ")"
 	}
 	sections = append(sections, Success.Render("✓")+" "+osInfo)
-	
+
 	// Shell Section
 	shellInfo := fmt.Sprintf("%s: %s", Bold.Render("Shell"), string(m.SystemInfo.Shell))
 	if m.SystemInfo.ShellVersion != "" {
 		shellInfo += fmt.Sprintf(" (%s)", m.SystemInfo.ShellVersion)
 	}
 	sections = append(sections, Success.Render("✓")+" "+shellInfo)
-	
+
 	// Architecture
 	archInfo := fmt.Sprintf("%s: %s", Bold.Render("Architecture"), m.SystemInfo.Arch)
 	sections = append(sections, Success.Render("✓")+" "+archInfo)
-	
+
 	// Home Directory
 	homeInfo := fmt.Sprintf("%s: %s", Bold.Render("Home Directory"), m.SystemInfo.HomeDir)
 	sections = append(sections, Success.Render("✓")+" "+homeInfo)
-	
+
 	// Package Managers Section
 	pkgMgrsHeader := Bold.Render("Package Managers")
 	if len(m.SystemInfo.PackageManagers) > 0 {
@@ -85,20 +85,13 @@ func (m Model) renderDetectionResults() string {
 	} else {
 		sections = append(sections, fmt.Sprintf("%s: %s", pkgMgrsHeader, Warning.Render("None detected")))
 	}
-	
+
 	// Combine sections
 	result := PanelStyle.Render(lipgloss.JoinVertical(lipgloss.Left, sections...))
 	result += "\n\n"
 	result += Subtle.Render("Press Esc to return to the main menu.")
 	result += "\n"
 	result += Subtle.Render("Press Enter to continue to module selection.")
-	
-	return result
-}
 
-// renderRunningState shows the detection in progress.
-func (m Model) renderRunningState() string {
-	return PanelStyle.Render(
-		Highlight.Render("Detecting system...") + "\n\n" +
-		Subtle.Render("Analyzing your development environment..."))
+	return result
 }

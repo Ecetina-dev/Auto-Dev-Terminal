@@ -60,7 +60,7 @@ var (
 
 	// Progress bar styles
 	ProgressBarEmpty = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("236"))
+				Foreground(lipgloss.Color("236"))
 
 	ProgressBarFull = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("86"))
@@ -70,7 +70,7 @@ var (
 			Foreground(lipgloss.Color("86"))
 
 	CheckboxChecked = lipgloss.NewStyle().
-				Foreground(lipgloss.Color("76")).SetString("✓")
+			Foreground(lipgloss.Color("76")).SetString("✓")
 
 	CheckboxUnchecked = lipgloss.NewStyle().
 				Foreground(lipgloss.Color("241")).SetString("○")
@@ -163,7 +163,7 @@ func formatNumber(n int) string {
 	if n < 10 {
 		return " " + string(rune('0'+n))
 	}
-	return string(rune('0' + n/10%10)) + string(rune('0'+n%10))
+	return string(rune('0'+n/10%10)) + string(rune('0'+n%10))
 }
 
 // KeyMap displays the help text for navigation keys.

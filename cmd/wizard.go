@@ -60,7 +60,7 @@ func runWizard(cmd *cobra.Command, args []string) error {
 var WizardDetectCmd = &cobra.Command{
 	Use:   "wizard-detect",
 	Short: "Run detection wizard",
-	Long: `Runs just the detection portion of the wizard and displays results.`,
+	Long:  `Runs just the detection portion of the wizard and displays results.`,
 	RunE:  runWizardDetect,
 }
 

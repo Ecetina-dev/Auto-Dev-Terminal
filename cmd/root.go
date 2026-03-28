@@ -3,7 +3,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/auto-dev-terminal/auto-dev-terminal/internal/constants"
 	"github.com/spf13/cobra"
@@ -37,8 +36,8 @@ func init() {
 	RootCmd.PersistentFlags().StringP("config", "c", "", "Custom config file path")
 
 	// Bind viper to flags
-	viper.BindPFlag("verbose", RootCmd.PersistentFlags().Lookup("verbose"))
-	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
+	_ = viper.BindPFlag("verbose", RootCmd.PersistentFlags().Lookup("verbose"))
+	_ = viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
 
 	// Add subcommands
 	RootCmd.AddCommand(DetectCmd)
@@ -62,15 +61,4 @@ func GetVerbose() bool {
 // GetConfigPath returns the custom config path if provided
 func GetConfigPath() string {
 	return viper.GetString("config")
-}
-
-// setupBackupDir ensures the backup directory exists
-func setupBackupDir() error {
-	backupDir := viper.GetString("backup_dir")
-	if _, err := os.Stat(backupDir); os.IsNotExist(err) {
-		if err := os.MkdirAll(backupDir, 0755); err != nil {
-			return fmt.Errorf("failed to create backup directory: %w", err)
-		}
-	}
-	return nil
 }

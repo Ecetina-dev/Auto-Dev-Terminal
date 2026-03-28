@@ -174,8 +174,8 @@ func ValidateModuleConfig(config ModuleConfig) error {
 	// Validate requirements
 	for _, req := range config.Requirements {
 		validTypes := map[string]bool{
-			"shell":    true,
-			"os":       true,
+			"shell":   true,
+			"os":      true,
 			"command": true,
 		}
 		if !validTypes[req.Type] {

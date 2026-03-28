@@ -53,45 +53,45 @@ const (
 type PackageManager string
 
 const (
-	PkgMgrHomebrew    PackageManager = "homebrew"
-	PkgMgrMacPorts    PackageManager = "macports"
-	PkgMgrChocolatey  PackageManager = "chocolatey"
-	PkgMgrScoop       PackageManager = "scoop"
-	PkgMgrWinget      PackageManager = "winget"
-	PkgMgrAPT         PackageManager = "apt"
-	PkgMgrDNF         PackageManager = "dnf"
-	PkgMgrYUM         PackageManager = "yum"
-	PkgMgrPacman      PackageManager = "pacman"
-	PkgMgrZypper      PackageManager = "zypper"
-	PkgMgrSnap        PackageManager = "snap"
-	PkgMgrFlatpak     PackageManager = "flatpak"
-	PkgMgrUnknown     PackageManager = "unknown"
+	PkgMgrHomebrew   PackageManager = "homebrew"
+	PkgMgrMacPorts   PackageManager = "macports"
+	PkgMgrChocolatey PackageManager = "chocolatey"
+	PkgMgrScoop      PackageManager = "scoop"
+	PkgMgrWinget     PackageManager = "winget"
+	PkgMgrAPT        PackageManager = "apt"
+	PkgMgrDNF        PackageManager = "dnf"
+	PkgMgrYUM        PackageManager = "yum"
+	PkgMgrPacman     PackageManager = "pacman"
+	PkgMgrZypper     PackageManager = "zypper"
+	PkgMgrSnap       PackageManager = "snap"
+	PkgMgrFlatpak    PackageManager = "flatpak"
+	PkgMgrUnknown    PackageManager = "unknown"
 )
 
 // SystemInfo holds all detection results
 type SystemInfo struct {
-	OS             OS             `json:"os" yaml:"os"`
-	Distro         Distro         `json:"distro" yaml:"distro"`
-	DistroVersion  string         `json:"distro_version" yaml:"distro_version"`
-	Shell          Shell          `json:"shell" yaml:"shell"`
-	ShellVersion   string         `json:"shell_version" yaml:"shell_version"`
+	OS              OS               `json:"os" yaml:"os"`
+	Distro          Distro           `json:"distro" yaml:"distro"`
+	DistroVersion   string           `json:"distro_version" yaml:"distro_version"`
+	Shell           Shell            `json:"shell" yaml:"shell"`
+	ShellVersion    string           `json:"shell_version" yaml:"shell_version"`
 	PackageManagers []PackageManager `json:"package_managers" yaml:"package_managers"`
-	HomeDir        string         `json:"home_dir" yaml:"home_dir"`
-	Username       string         `json:"username" yaml:"username"`
-	Hostname       string         `json:"hostname" yaml:"hostname"`
-	Arch           string         `json:"arch" yaml:"arch"`
+	HomeDir         string           `json:"home_dir" yaml:"home_dir"`
+	Username        string           `json:"username" yaml:"username"`
+	Hostname        string           `json:"hostname" yaml:"hostname"`
+	Arch            string           `json:"arch" yaml:"arch"`
 }
 
 // Module represents an installable module
 type Module struct {
-	Name          string         `yaml:"name" json:"name"`
-	DisplayName   string         `yaml:"display_name" json:"display_name"`
-	Description   string         `yaml:"description" json:"description"`
-	Version       string         `yaml:"version" json:"version"`
-	Dependencies  []string       `yaml:"dependencies" json:"dependencies"`
-	Install       InstallConfig  `yaml:"install" json:"install"`
-	Config        ConfigConfig   `yaml:"config" json:"config"`
-	Requirements  []Requirement   `yaml:"requirements" json:"requirements"`
+	Name         string        `yaml:"name" json:"name"`
+	DisplayName  string        `yaml:"display_name" json:"display_name"`
+	Description  string        `yaml:"description" json:"description"`
+	Version      string        `yaml:"version" json:"version"`
+	Dependencies []string      `yaml:"dependencies" json:"dependencies"`
+	Install      InstallConfig `yaml:"install" json:"install"`
+	Config       ConfigConfig  `yaml:"config" json:"config"`
+	Requirements []Requirement `yaml:"requirements" json:"requirements"`
 }
 
 // InstallConfig defines how to install the module
@@ -110,18 +110,18 @@ type ConfigConfig struct {
 
 // Requirement defines a prerequisite for the module
 type Requirement struct {
-	Type     string `yaml:"type" json:"type"`   // "shell", "os", "command"
+	Type     string `yaml:"type" json:"type"` // "shell", "os", "command"
 	Value    string `yaml:"value" json:"value"`
 	Optional bool   `yaml:"optional" json:"optional"`
 }
 
 // InstallResult represents the outcome of an installation attempt
 type InstallResult struct {
-	Success bool        `json:"success" yaml:"success"`
-	Module  string      `json:"module" yaml:"module"`
-	Error   string      `json:"error,omitempty" yaml:"error,omitempty"`
-	Output  string      `json:"output,omitempty" yaml:"output,omitempty"`
-	Version string      `json:"version,omitempty" yaml:"version,omitempty"`
+	Success bool   `json:"success" yaml:"success"`
+	Module  string `json:"module" yaml:"module"`
+	Error   string `json:"error,omitempty" yaml:"error,omitempty"`
+	Output  string `json:"output,omitempty" yaml:"output,omitempty"`
+	Version string `json:"version,omitempty" yaml:"version,omitempty"`
 }
 
 // Backup represents a configuration file backup
@@ -140,13 +140,13 @@ type BackupManifest struct {
 
 // TemplateVariables holds the variables available for template rendering
 type TemplateVariables struct {
-	OS        string
-	Shell     string
-	HomeDir   string
-	Username  string
-	Hostname  string
-	Distro    string
-	Arch      string
+	OS       string
+	Shell    string
+	HomeDir  string
+	Username string
+	Hostname string
+	Distro   string
+	Arch     string
 }
 
 // InstallOptions configures an installation

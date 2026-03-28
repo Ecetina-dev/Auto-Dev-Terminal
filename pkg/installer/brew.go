@@ -47,7 +47,7 @@ func (b *BrewInstaller) Install(pkg string, opts *types.InstallOptions) *types.I
 		return &types.InstallResult{
 			Success: false,
 			Module:  pkg,
-			Error:    err.Error(),
+			Error:   err.Error(),
 			Output:  output,
 		}
 	}

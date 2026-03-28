@@ -80,10 +80,22 @@ func (m *GitConfigModule) Install(opts *ModuleOptions) *ModuleResult {
 
 	// Configure user name and email if provided
 	if os.Getenv("GIT_USER_NAME") != "" {
-		m.runGitConfig("user.name", os.Getenv("GIT_USER_NAME"))
+		if err := m.runGitConfig("user.name", os.Getenv("GIT_USER_NAME")); err != nil {
+			return &ModuleResult{
+				Success: false,
+				Module:  m.Name(),
+				Error:   fmt.Sprintf("failed to set git user.name: %v", err),
+			}
+		}
 	}
 	if os.Getenv("GIT_USER_EMAIL") != "" {
-		m.runGitConfig("user.email", os.Getenv("GIT_USER_EMAIL"))
+		if err := m.runGitConfig("user.email", os.Getenv("GIT_USER_EMAIL")); err != nil {
+			return &ModuleResult{
+				Success: false,
+				Module:  m.Name(),
+				Error:   fmt.Sprintf("failed to set git user.email: %v", err),
+			}
+		}
 	}
 
 	// Install git-aware prompt if on a Unix-like system
@@ -416,5 +428,5 @@ var _ Module = (*GitConfigModule)(nil)
 
 // init registers the Git config module with the global registry.
 func init() {
-	Register(NewGitConfigModule())
+	_ = Register(NewGitConfigModule())
 }

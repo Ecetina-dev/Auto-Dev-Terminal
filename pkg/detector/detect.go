@@ -1,10 +1,11 @@
 package detector
 
 import (
-	"github.com/auto-dev-terminal/auto-dev-terminal/internal/types"
 	"os"
 	"os/user"
 	"strings"
+
+	"github.com/auto-dev-terminal/auto-dev-terminal/internal/types"
 )
 
 // Detect performs a full system detection and returns a SystemInfo struct.

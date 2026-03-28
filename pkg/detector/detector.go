@@ -42,9 +42,9 @@ func NewDetector() Detector {
 
 // DetectionResult represents the result of a detection operation.
 type DetectionResult struct {
-	Success bool
+	Success    bool
 	SystemInfo *types.SystemInfo
-	Error   error
+	Error      error
 }
 
 // DetectAsync performs detection asynchronously.

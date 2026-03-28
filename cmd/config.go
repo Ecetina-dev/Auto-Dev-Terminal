@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sort"
 	"time"
 
 	"github.com/auto-dev-terminal/auto-dev-terminal/pkg/config"
@@ -194,7 +193,10 @@ func runRestore(cmd *cobra.Command, args []string) error {
 	fmt.Printf("This will overwrite: %s\n", targetPath)
 	fmt.Print("Continue? [y/N]: ")
 	var response string
-	fmt.Scanln(&response)
+	if _, err := fmt.Scanln(&response); err != nil {
+		// If there's an error reading, assume no
+		response = "n"
+	}
 	if response != "y" && response != "Y" {
 		fmt.Println("Restore cancelled.")
 		return nil
@@ -389,37 +391,4 @@ func completeConfigNames(cmd *cobra.Command, args []string, toComplete string) (
 	}
 
 	return completions, cobra.ShellCompDirectiveNoFileComp
-}
-
-// backupEntryWithTime is a helper to work around unexported fields
-type backupEntryWithTime struct {
-	path      string
-	timestamp time.Time
-}
-
-func listBackupsSorted(configName string) ([]backupEntryWithTime, error) {
-	rm, err := config.NewRestoreManager()
-	if err != nil {
-		return nil, err
-	}
-
-	backups, err := rm.ListAvailableBackups(configName)
-	if err != nil {
-		return nil, err
-	}
-
-	// Sort by timestamp
-	sort.Slice(backups, func(i, j int) bool {
-		return backups[i].Timestamp().Before(backups[j].Timestamp())
-	})
-
-	var result []backupEntryWithTime
-	for _, b := range backups {
-		result = append(result, backupEntryWithTime{
-			path:      b.Path(),
-			timestamp: b.Timestamp(),
-		})
-	}
-
-	return result, nil
 }

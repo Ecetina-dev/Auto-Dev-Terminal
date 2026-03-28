@@ -280,5 +280,5 @@ var _ Module = (*OhMyZshModule)(nil)
 
 // init registers the Oh My Zsh module with the global registry.
 func init() {
-	Register(NewOhMyZshModule())
+	_ = Register(NewOhMyZshModule())
 }
