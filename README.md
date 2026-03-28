@@ -3,8 +3,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Go-1.24+-00ADD8?style=for-the-badge&logo=go" alt="Go Version">
   <img src="https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=for-the-badge&platforms=Windows%20%7C%20macOS%20%7C%20Linux" alt="Platforms">
-  <img src="https://img.shields.io/github/actions/workflow/status/auto-dev-terminal/auto-dev-terminal/ci.yml?style=for-the-badge" alt="CI">
-  <img src="https://img.shields.io/github/license/auto-dev-terminal/auto-dev-terminal?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/actions/workflow/status/Ecetina-dev/Auto-Dev-Terminal/ci.yml?style=for-the-badge" alt="CI">
+  <img src="https://img.shields.io/github/license/Ecetina-dev/Auto-Dev-Terminal?style=for-the-badge" alt="License">
 </p>
 
 > **Automate your development environment setup in minutes, not hours.**
@@ -33,15 +33,15 @@ Auto-Dev-Terminal is a CLI tool that automatically detects your operating system
 ### From Source
 
 ```bash
-git clone https://github.com/auto-dev-terminal/auto-dev-terminal.git
-cd auto-dev-terminal
-go build -o auto-dev-terminal ./cmd/cli
-sudo mv auto-dev-terminal /usr/local/bin/
+git clone https://github.com/Ecetina-dev/Auto-Dev-Terminal.git
+cd Auto-Dev-Terminal
+go build -o adt ./cmd/cli
+sudo mv adt /usr/local/bin/
 ```
 
 ### Pre-built Binaries
 
-Download the latest release from the [releases page](https://github.com/auto-dev-terminal/auto-dev-terminal/releases).
+Download the latest release from the [releases page](https://github.com/Ecetina-dev/Auto-Dev-Terminal/releases).
 
 ## 🖥️ Usage
 
@@ -50,7 +50,7 @@ Download the latest release from the [releases page](https://github.com/auto-dev
 Launch the interactive TUI wizard:
 
 ```bash
-auto-dev-terminal wizard
+adt wizard
 ```
 
 ### CLI Commands
@@ -59,54 +59,70 @@ auto-dev-terminal wizard
 
 ```bash
 # Basic detection
-auto-dev-terminal detect
+adt detect
+
+# Quick detection (simpler output)
+adt quick-detect
 
 # JSON output (useful for scripts)
-auto-dev-terminal detect --json
+adt detect --json
 
 # Verbose output
-auto-dev-terminal detect --verbose
+adt detect --verbose
 ```
 
 #### Install Modules
 
 ```bash
 # Install a specific module
-auto-dev-terminal install starship
+adt install starship
 
 # Install multiple modules
-auto-dev-terminal install starship gitconfig
+adt install starship gitconfig
 
 # Dry run (preview what would happen)
-auto-dev-terminal install --dry-run starship
+adt install --dry-run starship
 
 # Skip confirmation prompts
-auto-dev-terminal install --yes starship
+adt install --yes starship
 
 # Force reinstallation
-auto-dev-terminal install --force starship
+adt install --force starship
 ```
 
 #### List Available Modules
 
 ```bash
-auto-dev-terminal list-modules
+adt list-modules
+```
+
+#### Additional Commands
+
+```bash
+# Quick OS detection (outputs just OS name, useful for scripts)
+adt detect-quick
+
+# Run detection wizard (shows detailed system info in wizard style)
+adt wizard-detect
+
+# Manage configuration (shows help for config-related commands)
+adt config
 ```
 
 #### Configuration Backup
 
 ```bash
 # Create a backup
-auto-dev-terminal backup ~/.gitconfig
+adt backup ~/.gitconfig
 
 # List backups
-auto-dev-terminal list
+adt list-backups
 
 # Restore from backup
-auto-dev-terminal restore ~/.gitconfig 2024-01-15_10-30-00
+adt restore ~/.gitconfig 2024-01-15_10-30-00
 
 # Delete old backups
-auto-dev-terminal delete --older-than 30d
+adt delete-backups --older-than 30d
 ```
 
 ## 🎯 Examples
@@ -115,10 +131,10 @@ auto-dev-terminal delete --older-than 30d
 
 ```bash
 # 1. Detect your system
-auto-dev-terminal detect
+adt detect
 
 # 2. Launch the wizard
-auto-dev-terminal wizard
+adt wizard
 
 # 3. Select modules and install
 ```
@@ -127,40 +143,40 @@ auto-dev-terminal wizard
 
 ```bash
 # Detect system and install starship non-interactively
-auto-dev-terminal detect --json
-auto-dev-terminal install --yes starship
+adt detect --json
+adt install --yes starship
 ```
 
 ### Windows PowerShell Setup
 
 ```powershell
 # Detect system
-.\auto-dev-terminal.exe detect
+.\adt.exe detect
 
 # Install modules via Chocolatey or Winget
-.\auto-dev-terminal.exe install starship
+.\adt.exe install starship
 ```
 
 ### Linux/macOS Setup
 
 ```bash
 # Full setup with Oh My Zsh (requires Zsh)
-auto-dev-terminal install ohmyzsh starship gitconfig
+adt install ohmyzsh starship gitconfig
 ```
 
 ## 🔧 Configuration
 
 ### Config File Location
 
-- Windows: `%APPDATA%\auto-dev-terminal\config.yaml`
-- macOS: `~/Library/Application Support/auto-dev-terminal/config.yaml`
-- Linux: `~/.config/auto-dev-terminal/config.yaml`
+- Windows: `%APPDATA%\adt\config.yaml`
+- macOS: `~/Library/Application Support/adt/config.yaml`
+- Linux: `~/.config/adt/config.yaml`
 
 ### Backup Directory
 
 All backups are stored in:
-- Windows: `%APPDATA%\auto-dev-terminal\backups\`
-- macOS/Linux: `~/.auto-dev-terminal/backups/`
+- Windows: `%APPDATA%\adt\backups\`
+- macOS/Linux: `~/.adt/backups/`
 
 ## 🏗️ Architecture
 
