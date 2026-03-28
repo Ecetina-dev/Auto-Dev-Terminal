@@ -32,61 +32,63 @@ func TestNewStarshipModule(t *testing.T) {
 func TestStarshipModuleInstall(t *testing.T) {
 	m := NewStarshipModule()
 
+	// Test OS detection logic - we can't actually install in test environment
+	// so we just verify the OS switch logic works correctly
+
 	tests := []struct {
-		name string
-		opts *ModuleOptions
+		name          string
+		os            types.OS
+		shouldSucceed bool
 	}{
 		{
-			name: "windows OS",
-			opts: &ModuleOptions{
-				OS:      types.OSWindows,
-				HomeDir: "/home/user",
-				Verbose: false,
-				Force:   false,
-			},
+			name:          "windows OS",
+			os:            types.OSWindows,
+			shouldSucceed: true,
 		},
 		{
-			name: "darwin OS",
-			opts: &ModuleOptions{
-				OS:      types.OSDarwin,
-				HomeDir: "/home/user",
-				Verbose: false,
-				Force:   false,
-			},
+			name:          "darwin OS",
+			os:            types.OSDarwin,
+			shouldSucceed: true,
 		},
 		{
-			name: "linux OS",
-			opts: &ModuleOptions{
-				OS:      types.OSLinux,
-				HomeDir: "/home/user",
-				Verbose: false,
-				Force:   false,
-			},
+			name:          "linux OS",
+			os:            types.OSLinux,
+			shouldSucceed: true,
 		},
 		{
-			name: "unsupported OS",
-			opts: &ModuleOptions{
-				OS:      "freebsd",
-				HomeDir: "/home/user",
-				Verbose: false,
-				Force:   false,
-			},
+			name:          "unsupported OS",
+			os:            types.OS("freebsd"),
+			shouldSucceed: false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// This should not panic
-			result := m.Install(tt.opts)
+			opts := &ModuleOptions{
+				OS:      tt.os,
+				HomeDir: "/home/user",
+				Verbose: false,
+				Force:   false,
+			}
+
+			result := m.Install(opts)
 			if result == nil {
 				t.Fatal("Install() returned nil result")
 			}
 
-			// For unsupported OS, we expect failure
-			if tt.opts != nil && tt.opts.OS == "freebsd" {
+			// For unsupported OS, should always fail
+			if !tt.shouldSucceed {
 				if result.Success {
 					t.Error("Install() should have failed for unsupported OS")
 				}
+				return
+			}
+
+			// For supported OS, we can't guarantee success in test environment
+			// (Homebrew might not be installed, network might be down, etc.)
+			// So we just verify it didn't panic and returned a valid result
+			if result.Module != "starship" {
+				t.Errorf("Install() returned wrong module: %s", result.Module)
 			}
 		})
 	}
@@ -156,12 +158,12 @@ func TestStarshipModuleIsInstalled(t *testing.T) {
 	// This test checks if starship is installed on the system
 	// In a CI environment, it likely won't be installed
 	installed, err := m.IsInstalled()
-	
+
 	// The function should not error - it returns false if not found
 	if err != nil {
 		t.Logf("IsInstalled() returned error (expected if starship not installed): %v", err)
 	}
-	
+
 	// Just verify we got a result
 	_ = installed
 }
