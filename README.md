@@ -32,16 +32,54 @@ Auto-Dev-Terminal is a CLI tool that automatically detects your operating system
 
 ### From Source
 
+#### Linux / macOS
+
 ```bash
 git clone https://github.com/Ecetina-dev/Auto-Dev-Terminal.git
 cd Auto-Dev-Terminal
 go build -o adt ./cmd/cli
 sudo mv adt /usr/local/bin/
+# Verify installation
+adt --version
+```
+
+#### Windows
+
+```powershell
+# Using PowerShell
+git clone https://github.com/Ecetina-dev/Auto-Dev-Terminal.git
+cd Auto-Dev-Terminal
+go build -o adt.exe ./cmd/cli
+
+# Add to PATH (run as Administrator)
+# Option 1: Move to a folder in PATH
+Move-Item adt.exe C:\Windows\System32\
+
+# Option 2: Add to user PATH
+$env:PATH += ";$PWD"
+# Or permanently:
+[Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";$PWD", "User")
+
+# Verify installation
+.\adt.exe --version
 ```
 
 ### Pre-built Binaries
 
 Download the latest release from the [releases page](https://github.com/Ecetina-dev/Auto-Dev-Terminal/releases).
+
+#### Windows (using Winget)
+
+```powershell
+winget install Ecetina-dev.AutoDevTerminal
+```
+
+#### macOS (using Homebrew)
+
+```bash
+# Coming soon - build from source for now
+brew install adt
+```
 
 ## 🖥️ Usage
 
