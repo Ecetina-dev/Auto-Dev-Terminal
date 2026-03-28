@@ -11,16 +11,44 @@ import (
 )
 
 // DetectShell detects the current shell by checking environment variables.
-// Priority: $SHELL > shell-specific env vars > PATH lookup
+// Priority: shell-specific env vars > $SHELL (with Windows-specific logic)
 func DetectShell() (types.Shell, string, error) {
-	// FIRST: Check $SHELL - this is the most reliable indicator of current shell
-	// (especially important for Git Bash, WSL, etc.)
-	shellPath := getEnvOrEmpty("SHELL")
-	if shellPath != "" {
-		shell := shellFromPath(shellPath)
-		if shell != types.ShellUnknown {
-			version, _ := getShellVersion(shellPath)
-			return shell, version, nil
+	// FIRST: On Windows, check if we're actually in PowerShell
+	// This must come BEFORE $SHELL because Git Bash sets $SHELL globally
+	// and it persists even when running in PowerShell
+	if runtime.GOOS == "windows" {
+		// Check PSHOME - this is set when in PowerShell (most reliable)
+		if pshome := getEnvOrEmpty("PSHOME"); pshome != "" {
+			if strings.Contains(strings.ToLower(pshome), "pwsh") {
+				return types.ShellPwsh, getPowerShellVersion("pwsh"), nil
+			}
+			return types.ShellPowerShell, getPowerShellVersion("powershell"), nil
+		}
+
+		// Check if PATH contains PowerShell directories - this indicates we're in PowerShell
+		// PowerShell adds its directories to PATH when active
+		path := getEnvOrEmpty("PATH")
+		if strings.Contains(path, "PowerShell\\v1.0") ||
+			strings.Contains(path, "PowerShell/7") ||
+			strings.Contains(path, "WindowsPowerShell") {
+			// Check if it's pwsh (PowerShell 7+) or powershell (Windows PowerShell)
+			if strings.Contains(path, "PowerShell/7") || strings.Contains(path, "PowerShell 7") {
+				return types.ShellPwsh, "", nil
+			}
+			return types.ShellPowerShell, "", nil
+		}
+
+		// Check parent process as fallback for PowerShell
+		parentShell := detectParentShell()
+		if parentShell == types.ShellPowerShell || parentShell == types.ShellPwsh {
+			return parentShell, "", nil
+		}
+
+		// Check if we're in cmd.exe (no PSModulePath, no MSYSTEM, no bash)
+		msystem := getEnvOrEmpty("MSYSTEM")
+		shellPath := getEnvOrEmpty("SHELL")
+		if msystem == "" && shellPath == "" && getEnvOrEmpty("PSHOME") == "" {
+			return types.ShellCmd, "", nil
 		}
 	}
 
@@ -52,27 +80,52 @@ func DetectShell() (types.Shell, string, error) {
 		return types.ShellAsh, ashVersion, nil
 	}
 
-	// THIRD: Only if no env vars found, check if shell binaries exist
-	// and are currently running (not just installed)
-
-	// Check for PowerShell - but ONLY as last resort
-	// Note: PSModulePath is set on Windows even when not using PowerShell
-	// so we only check this if $SHELL and other env vars failed
-	if runtime.GOOS == "windows" {
-		// On Windows, check parent process to determine actual shell
-		// or check if we're actually in a PowerShell session
-		parentShell := detectParentShell()
-		if parentShell != types.ShellUnknown {
-			return parentShell, "", nil
+	// THIRD: Check $SHELL - but only if we're NOT in a Windows terminal
+	// that was detected above (PowerShell, cmd)
+	// On Windows, $SHELL is often set by Git Bash even when in PowerShell
+	shellPath := getEnvOrEmpty("SHELL")
+	if shellPath != "" && runtime.GOOS != "windows" {
+		// On non-Windows, $SHELL is reliable
+		shell := shellFromPath(shellPath)
+		if shell != types.ShellUnknown {
+			version, _ := getShellVersion(shellPath)
+			return shell, version, nil
 		}
 	}
 
-	// Check if we're in cmd.exe on Windows (no special env vars)
-	if isWindowsCmd() {
-		return types.ShellCmd, "", nil
+	// On Windows, check $SHELL only if we're confident we're in Git Bash/MSYS2
+	// (not in PowerShell or cmd)
+	if runtime.GOOS == "windows" && shellPath != "" {
+		// Only trust $SHELL on Windows if MSYSTEM is set AND we're not in PowerShell
+		msystem := getEnvOrEmpty("MSYSTEM")
+		if msystem != "" && getEnvOrEmpty("PSHOME") == "" {
+			shell := shellFromPath(shellPath)
+			if shell != types.ShellUnknown {
+				version, _ := getShellVersion(shellPath)
+				return shell, version, nil
+			}
+		}
 	}
 
+	// FOURTH: Last resort - check for common shells in PATH
+	// This handles edge cases where none of the above methods work
+
 	return types.ShellUnknown, "", fmt.Errorf("could not detect shell")
+}
+
+// getPowerShellVersion attempts to get the PowerShell version.
+func getPowerShellVersion(powershellType string) string {
+	var cmd *exec.Cmd
+	if powershellType == "pwsh" {
+		cmd = exec.Command("pwsh", "-NoProfile", "-Command", "$PSVersionTable.PSVersion.ToString()")
+	} else {
+		cmd = exec.Command("powershell", "-NoProfile", "-Command", "$PSVersionTable.PSVersion.ToString()")
+	}
+	output, err := cmd.Output()
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(string(output))
 }
 
 // shellFromPath converts a shell path to our Shell type.
