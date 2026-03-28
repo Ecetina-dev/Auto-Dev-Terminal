@@ -68,7 +68,7 @@ func TestStarshipModuleInstall(t *testing.T) {
 				OS:      tt.os,
 				HomeDir: "/home/user",
 				Verbose: false,
-				Force:   false,
+				Force:   true, // Force to bypass "already installed" check
 			}
 
 			result := m.Install(opts)
