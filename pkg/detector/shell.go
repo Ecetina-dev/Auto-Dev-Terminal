@@ -161,6 +161,16 @@ func detectParentShell() types.Shell {
 		}
 	}
 
+	// Check for PowerShell - PSHOME is set when in PowerShell
+	// This is more reliable than PSModulePath which can be set system-wide
+	if pshome := getEnvOrEmpty("PSHOME"); pshome != "" {
+		// Check if it's PowerShell 7+ (pwsh) or Windows PowerShell
+		if strings.Contains(strings.ToLower(pshome), "pwsh") {
+			return types.ShellPwsh
+		}
+		return types.ShellPowerShell
+	}
+
 	// Check for other MSYS2/Unix-like environment indicators
 	if getEnvOrEmpty("TERM") == "xterm" {
 		// Unix-like terminal on Windows (Git Bash, WSL, etc.)
@@ -169,7 +179,63 @@ func detectParentShell() types.Shell {
 		}
 	}
 
+	// Additional check: look for powershell.exe in the process path
+	// This is a fallback for edge cases
+	parentProc := getParentProcessName()
+	if parentProc != "" {
+		lower := strings.ToLower(parentProc)
+		if strings.Contains(lower, "pwsh") {
+			return types.ShellPwsh
+		}
+		if strings.Contains(lower, "powershell") {
+			return types.ShellPowerShell
+		}
+	}
+
 	return types.ShellUnknown
+}
+
+// getParentProcessName returns the name of the parent process on Windows.
+func getParentProcessName() string {
+	if runtime.GOOS != "windows" {
+		return ""
+	}
+
+	// Use wmic to get parent process name
+	cmd := exec.Command("wmic", "process", "where", "ProcessId="+getCurrentPID(), "get", "ParentProcessId")
+	output, err := cmd.Output()
+	if err != nil {
+		return ""
+	}
+
+	lines := strings.Split(string(output), "\n")
+	if len(lines) < 2 {
+		return ""
+	}
+
+	parentPID := strings.TrimSpace(lines[1])
+	if parentPID == "" || parentPID == "0" {
+		return ""
+	}
+
+	// Get process name by PID
+	cmd = exec.Command("wmic", "process", "where", "ProcessId="+parentPID, "get", "Name")
+	output, err = cmd.Output()
+	if err != nil {
+		return ""
+	}
+
+	lines = strings.Split(string(output), "\n")
+	if len(lines) < 2 {
+		return ""
+	}
+
+	return strings.TrimSpace(lines[1])
+}
+
+// getCurrentPID returns the current process ID.
+func getCurrentPID() string {
+	return fmt.Sprintf("%d", os.Getpid())
 }
 
 // IsShellCompatibleWithZsh returns true if the shell can use Oh-My-Zsh.

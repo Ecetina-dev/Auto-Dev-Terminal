@@ -79,6 +79,12 @@ func NewModel() Model {
 
 // Init implements tea.Model Init method - runs any necessary initialization.
 func (m Model) Init() tea.Cmd {
+	// Initialize built-in modules first (required before listing)
+	if err := modules.InitBuiltinModules(); err != nil {
+		// Log error but continue - modules might be loaded from elsewhere
+		// m.InitError will be handled in the view if needed
+	}
+
 	// Load available modules when starting
 	loadedModules := modules.List()
 	if len(loadedModules) > 0 {
