@@ -83,6 +83,8 @@ brew install adt
 
 ## 🖥️ Usage
 
+> **Note:** Replace `adt` with `./adt` (Linux/macOS) or `.\adt.exe` (Windows) if the command is not found or not in your PATH.
+
 ### Interactive Wizard
 
 Launch the interactive TUI wizard:
@@ -188,10 +190,12 @@ adt install --yes starship
 ### Windows PowerShell Setup
 
 ```powershell
+# NOTE: If 'adt' is not recognized, use '.\adt.exe' instead
+
 # Detect system
 .\adt.exe detect
 
-# Install modules via Chocolatey or Winget
+# Install modules (uses Chocolatey or Winget automatically)
 .\adt.exe install starship
 ```
 
